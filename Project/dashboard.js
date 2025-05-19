@@ -1,7 +1,4 @@
 // dashboard.js
-
-// Import TensorFlow.js and MobileNet model as ES modules
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
@@ -36,48 +33,6 @@ navigator.mediaDevices.getUserMedia({ video: true })
   .catch((err) => {
     alert("Camera error: " + err.message);
   });
-
-// Load MobileNet model
-let model;
-mobilenet.load().then((loadedModel) => {
-  model = loadedModel;
-  console.log("MobileNet model loaded.");
-});
-
-// Classify the image from video
-window.classifyImage = async function () {
-  if (!model) {
-    document.getElementById("classificationResult").textContent = "Model not loaded yet.";
-    return;
-  }
-
-  const canvas = document.getElementById("canvas");
-  const context = canvas.getContext("2d");
-  context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-  const predictions = await model.classify(canvas);
-
-  const result = document.getElementById("classificationResult");
-  const bin = document.getElementById("binGuidance");
-
-  if (predictions.length > 0) {
-    const topPrediction = predictions[0];
-    result.textContent = `Detected: ${topPrediction.className} (${(topPrediction.probability * 100).toFixed(2)}%)`;
-
-    // Basic bin guidance
-    const label = topPrediction.className.toLowerCase();
-    if (label.includes("bottle") || label.includes("plastic")) {
-      bin.textContent = "🟦 Put it in the BLUE bin (Recyclables)";
-    } else if (label.includes("banana") || label.includes("apple")) {
-      bin.textContent = "🟩 Put it in the GREEN bin (Organic)";
-    } else {
-      bin.textContent = "🟥 Put it in the RED bin (General waste)";
-    }
-  } else {
-    result.textContent = "Could not classify the object.";
-    bin.textContent = "";
-  }
-};
 
 // Logout function
 window.logout = function () {
