@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard</title>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h2>Welcome to Your Dashboard</h2>
+    <video id="video" width="300" autoplay></video>
+    <br>
+    <button onclick="classifyImage()">Classify Trash</button>
+    <canvas id="canvas" width="300" height="300" style="display:none;"></canvas>
+    <p id="classificationResult"></p>
+    <p id="binGuidance"></p>
+    <button onclick="logout()">Logout</button>
+  </div>
+  
+  <script type="module" src="dashboard.js"></script>
+</body>
+</html>
