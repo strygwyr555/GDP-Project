@@ -1,23 +1,74 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Dashboard</title>
-  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Recycling AI Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
 </head>
 <body>
-  <div class="container">
-    <h2>Welcome to Your Dashboard</h2>
-    <video id="video" width="300" autoplay></video>
-    <br>
-    <button onclick="classifyImage()">Classify Trash</button>
-    <canvas id="canvas" width="300" height="300" style="display:none;"></canvas>
-    <p id="classificationResult"></p>
-    <p id="binGuidance"></p>
-    <button onclick="logout()">Logout</button>
-  </div>
-  
-  <script type="module" src="dashboard.js"></script>
+    <div class="dashboard-container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h3>Recycling Assistant</h3>
+            </div>
+            <ul class="nav-links">
+                <li class="active"><a href="#"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="#scan"><i class="fas fa-camera"></i> Scan Item</a></li>
+                <li><a href="#history"><i class="fas fa-history"></i> History</a></li>
+                <li><a href="#tips"><i class="fas fa-lightbulb"></i> Tips</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <header class="dashboard-header">
+                <h1>Welcome Back, <span id="userName">User</span>!</h1>
+                <div class="user-profile">
+                    <span id="userEmail"></span>
+                </div>
+            </header>
+
+            <div class="dashboard-grid">
+                <div class="card scan-card">
+                    <h3>Quick Scan</h3>
+                    <p>Scan an item to check if it's recyclable</p>
+                    <button class="btn-primary"><i class="fas fa-camera"></i> Start Scan</button>
+                </div>
+
+                <div class="card stats-card">
+                    <h3>Your Impact</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-number">0</span>
+                            <span class="stat-label">Items Scanned</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">0</span>
+                            <span class="stat-label">Items Recycled</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card history-card">
+                    <h3>Recent Scans</h3>
+                    <div class="activity-list" id="recentActivity">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="card tip-card">
+                    <h3>Daily Tip</h3>
+                    <p id="dailyTip">Remember to rinse containers before recycling them!</p>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script type="module" src="dashboard.js"></script>
 </body>
 </html>
