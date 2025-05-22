@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Recycling AI Assistant</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
 </head>
 <body>
     <div class="dashboard-container">
@@ -38,7 +36,9 @@
                 <div class="card scan-card">
                     <h3>Quick Scan</h3>
                     <p>Scan an item to check if it's recyclable</p>
-                    <button class="btn-primary"><i class="fas fa-camera"></i> Start Scan</button>
+                    <button id="scrollToCameraBtn" class="btn-primary">
+                        <i class="fas fa-camera"></i> Start Scan
+                    </button>
                 </div>
 
                 <div class="card stats-card">
@@ -57,9 +57,10 @@
 
                 <div class="card history-card">
                     <h3>Recent Scans</h3>
-                    <div class="activity-list" id="recentActivity">
+                    <div class="recent-scans" id="recentScans">
                         <!-- Will be populated by JavaScript -->
                     </div>
+                    <a href="history.html" class="view-all-link">View All History <i class="fas fa-arrow-right"></i></a>
                 </div>
 
                 <div class="card tip-card">
@@ -67,8 +68,37 @@
                     <p id="dailyTip">Remember to rinse containers before recycling them!</p>
                 </div>
             </div>
+
+            <div id="cameraSection" class="camera-section">
+                <div class="camera-wrapper">
+                    <video id="cameraFeed" autoplay playsinline></video>
+                    <canvas id="canvas" style="display: none;"></canvas>
+                    <div class="camera-overlay" id="cameraOverlay">
+                        <div class="camera-instructions">
+                            <i class="fas fa-camera"></i>
+                            <p>Position item in frame</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="camera-controls">
+                    <button id="startCameraBtn" class="btn btn-primary">
+                        <i class="fas fa-camera"></i> Start Camera
+                    </button>
+                    <button id="captureBtn" class="btn btn-primary" style="display: none;">
+                        <i class="fas fa-camera"></i> Capture
+                    </button>
+                    <button id="retakeBtn" class="btn btn-secondary" style="display: none;">
+                        <i class="fas fa-redo"></i> Retake
+                    </button>
+                </div>
+                <div id="resultArea" class="result-area" style="display: none;">
+                    <h3>Classification Result</h3>
+                    <div id="predictionResult"></div>
+                </div>
+            </div>
         </main>
     </div>
-    <script type="module" src="dashboard.js"></script>
+    <script type="module" src="../js/camera.js"></script>
+    <script type="module" src="../js/dashboard.js"></script>
 </body>
 </html>

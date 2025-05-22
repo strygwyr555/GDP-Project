@@ -117,3 +117,26 @@ window.classifyImage = async function() {
 
   updateRecyclingStats(topPrediction.category);
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const scrollToCameraBtn = document.getElementById('scrollToCameraBtn');
+    const cameraSection = document.getElementById('cameraSection');
+
+    if (scrollToCameraBtn && cameraSection) {
+        scrollToCameraBtn.addEventListener('click', () => {
+            // Smooth scroll to camera section
+            cameraSection.scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'center'
+            });
+            
+            // Optional: Start the camera automatically after scrolling
+            setTimeout(() => {
+                const startCameraBtn = document.getElementById('startCameraBtn');
+                if (startCameraBtn) {
+                    startCameraBtn.click();
+                }
+            }, 1000); // Wait for scroll to complete
+        });
+    }
+});

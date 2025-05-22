@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan History - Recycling AI Assistant</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <nav class="sidebar">
+            <!-- Same sidebar as dashboard -->
+            <div class="sidebar-header">
+                <h3>Recycling Assistant</h3>
+            </div>
+            <ul class="nav-links">
+                <li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="dashboard.html#scan"><i class="fas fa-camera"></i> Scan Item</a></li>
+                <li class="active"><a href="history.html"><i class="fas fa-history"></i> History</a></li>
+                <li><a href="#tips"><i class="fas fa-lightbulb"></i> Tips</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <header class="dashboard-header">
+                <h1>Scan History</h1>
+            </header>
+
+            <div class="history-container">
+                <div class="history-filters">
+                    <input type="text" id="searchInput" placeholder="Search items...">
+                    <select id="filterType">
+                        <option value="all">All Items</option>
+                        <option value="plastic">Plastic</option>
+                        <option value="non-plastic">Non-Plastic</option>
+                    </select>
+                </div>
+
+                <div class="history-grid" id="historyGrid">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+        </main>
+    </div>
+    <script type="module" src="../js/history.js"></script>
+</body>
+</html>
