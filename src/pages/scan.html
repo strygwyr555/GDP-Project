@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan Item - Recycling Assistant</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h3 class="sidebar-title">Recycling Assistant</h3>
+            </div>
+            <ul class="nav-links">
+                <li>
+                    <a href="dashboard.html">
+                        <i class="fas fa-home"></i>
+                        <span class="nav-text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="scan.html">
+                        <i class="fas fa-camera"></i>
+                        <span class="nav-text">Scan Items</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="history.html">
+                        <i class="fas fa-history"></i>
+                        <span class="nav-text">History</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#tips">
+                        <i class="fas fa-lightbulb"></i>
+                        <span class="nav-text">Tips</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="nav-text">Logout</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="camera-section">
+                <h2>Scan Recyclable Item</h2>
+                <div class="camera-wrapper">
+                    <video id="cameraFeed" autoplay playsinline style="display: none;"></video>
+                    <canvas id="photoCanvas" style="display: none;"></canvas>
+                    <img id="capturedImage" style="display: none; max-width: 100%;">
+                    <div id="cameraError" class="error-message" style="display: none;">
+                        <p></p>
+                    </div>
+                    <div class="loading-indicator" style="display: none;">
+                        <div class="spinner"></div>
+                        <p>Initializing camera...</p>
+                    </div>
+                </div>
+                <div class="camera-controls">
+                    <button id="startCamera" class="btn-dynamic btn-primary">
+                        <span class="btn-text">Start Camera</span>
+                        <span class="btn-animation"><i class="fas fa-camera"></i></span>
+                    </button>
+                    <button id="capturePhoto" class="btn-dynamic btn-primary" style="display: none;">
+                        <span class="btn-text">Take Photo</span>
+                        <span class="btn-animation"><i class="fas fa-camera-retro"></i></span>
+                    </button>
+                    <button id="retakePhoto" class="btn-dynamic btn-secondary" style="display: none;">
+                        <span class="btn-text">Retake</span>
+                        <span class="btn-animation"><i class="fas fa-redo"></i></span>
+                    </button>
+                </div>
+                <div id="result" class="result-area" style="display: none;">
+                    <h3>Classification Result</h3>
+                    <div id="classificationResult"></div>
+                    <div id="recyclingInstructions"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script type="module" src="../js/scan.js"></script>
+</body>
+</html>

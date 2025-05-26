@@ -6,21 +6,47 @@
     <title>Dashboard - Recycling AI Assistant</title>
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Remove TensorFlow.js scripts -->
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
 </head>
 <body>
     <div class="dashboard-container">
         <nav class="sidebar">
             <div class="sidebar-header">
-                <h3>Recycling Assistant</h3>
+                <h3 class="sidebar-title">Recycling Assistant</h3>
             </div>
             <ul class="nav-links">
-                <li class="active"><a href="#"><i class="fas fa-home"></i> Dashboard</a></li>
-                <li><a href="#scan"><i class="fas fa-camera"></i> Scan Item</a></li>
-                <li><a href="#history"><i class="fas fa-history"></i> History</a></li>
-                <li><a href="#tips"><i class="fas fa-lightbulb"></i> Tips</a></li>
+                <li class="active">
+                    <a href="#">
+                        <i class="fas fa-home"></i>
+                        <span class="nav-text">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="scan.html">
+                        <i class="fas fa-camera"></i>
+                        <span class="nav-text">Scan Items</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="history.html">
+                        <i class="fas fa-history"></i>
+                        <span class="nav-text">History</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#tips">
+                        <i class="fas fa-lightbulb"></i>
+                        <span class="nav-text">Tips</span>
+                    </a>
+                </li>
             </ul>
             <div class="sidebar-footer">
-                <button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                <button id="logoutBtn" class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="nav-text">Logout</span>
+                </button>
             </div>
         </nav>
 
@@ -33,14 +59,18 @@
             </header>
 
             <div class="dashboard-grid">
+                <!-- Modified Quick Scan Card -->
                 <div class="card scan-card">
                     <h3>Quick Scan</h3>
                     <p>Scan an item to check if it's recyclable</p>
-                    <button id="scrollToCameraBtn" class="btn-primary">
-                        <i class="fas fa-camera"></i> Start Scan
-                    </button>
+                    <!-- Changed to a simple link instead of camera activation -->
+                    <a href="scan.html" class="btn-primary">
+                        <i class="fas fa-camera"></i>
+                        Start Scanning
+                    </a>
                 </div>
 
+                <!-- Stats Card -->
                 <div class="card stats-card">
                     <h3>Your Impact</h3>
                     <div class="stats-grid">
@@ -55,6 +85,7 @@
                     </div>
                 </div>
 
+                <!-- History Card -->
                 <div class="card history-card">
                     <h3>Recent Scans</h3>
                     <div class="recent-scans" id="recentScans">
@@ -63,42 +94,15 @@
                     <a href="history.html" class="view-all-link">View All History <i class="fas fa-arrow-right"></i></a>
                 </div>
 
+                <!-- Tip Card -->
                 <div class="card tip-card">
                     <h3>Daily Tip</h3>
                     <p id="dailyTip">Remember to rinse containers before recycling them!</p>
                 </div>
             </div>
-
-            <div id="cameraSection" class="camera-section">
-                <div class="camera-wrapper">
-                    <video id="cameraFeed" autoplay playsinline></video>
-                    <canvas id="canvas" style="display: none;"></canvas>
-                    <div class="camera-overlay" id="cameraOverlay">
-                        <div class="camera-instructions">
-                            <i class="fas fa-camera"></i>
-                            <p>Position item in frame</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="camera-controls">
-                    <button id="startCameraBtn" class="btn btn-primary">
-                        <i class="fas fa-camera"></i> Start Camera
-                    </button>
-                    <button id="captureBtn" class="btn btn-primary" style="display: none;">
-                        <i class="fas fa-camera"></i> Capture
-                    </button>
-                    <button id="retakeBtn" class="btn btn-secondary" style="display: none;">
-                        <i class="fas fa-redo"></i> Retake
-                    </button>
-                </div>
-                <div id="resultArea" class="result-area" style="display: none;">
-                    <h3>Classification Result</h3>
-                    <div id="predictionResult"></div>
-                </div>
-            </div>
         </main>
     </div>
-    <script type="module" src="../js/camera.js"></script>
+    <!-- Remove camera.js script if it exists -->
     <script type="module" src="../js/dashboard.js"></script>
 </body>
 </html>

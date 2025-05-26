@@ -14,11 +14,47 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
+// Check authentication state
 onAuthStateChanged(auth, (user) => {
   if (!user) {
     window.location.href = "login.html";
+  } else {
+    // Update user info in dashboard
+    const userName = document.getElementById('userName');
+    const userEmail = document.getElementById('userEmail');
+    if (userName) userName.textContent = user.displayName || 'User';
+    if (userEmail) userEmail.textContent = user.email;
   }
 });
+
+// Handle logout
+document.addEventListener('DOMContentLoaded', function() {
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                window.location.href = "login.html";
+            } catch (error) {
+                console.error('Error signing out:', error);
+            }
+        });
+    }
+
+    // Display recycling stats
+    displayStats();
+});
+
+// Stats handling functions
+function displayStats() {
+    const stats = JSON.parse(localStorage.getItem('recyclingStats') || '{}');
+    const statsContainer = document.querySelector('.stats-grid');
+    if (statsContainer) {
+        const totalScanned = Object.values(stats).reduce((a, b) => a + b, 0);
+        const itemsScanned = document.querySelector('.stat-number');
+        if (itemsScanned) itemsScanned.textContent = totalScanned;
+    }
+}
 
 const video = document.getElementById("card scan-card");
 navigator.mediaDevices.getUserMedia({ video: true })
@@ -139,4 +175,71 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 1000); // Wait for scroll to complete
         });
     }
+});
+
+// After the Firebase initialization code
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const camera = new CameraHandler();
+        await camera.init();
+        
+        // Initialize TensorFlow model
+        const model = await tf.loadLayersModel('YOUR_MODEL_PATH');
+        
+        const captureBtn = document.getElementById('captureBtn');
+        captureBtn.addEventListener('click', async () => {
+            const canvas = document.getElementById('canvas');
+            const resultArea = document.getElementById('resultArea');
+            const loadingIndicator = document.querySelector('.loading-indicator');
+            
+            // Show loading state
+            loadingIndicator.style.display = 'block';
+            resultArea.style.display = 'block';
+            
+            try {
+                // Get image data from canvas
+                const imageData = tf.browser.fromPixels(canvas)
+                    .resizeNearestNeighbor([224, 224])
+                    .expandDims()
+                    .toFloat();
+                
+                // Make prediction
+                const prediction = await model.predict(imageData).data();
+                const result = Array.from(prediction)
+                    .map((p, i) => ({
+                        probability: p,
+                        className: categories[i]
+                    }))
+                    .sort((a, b) => b.probability - a.probability)[0];
+                
+                // Display result
+                document.getElementById('predictionResult').innerHTML = `
+                    <h4>Detected: ${result.className}</h4>
+                    <p>Confidence: ${(result.probability * 100).toFixed(2)}%</p>
+                `;
+                
+                document.getElementById('recyclingGuide').innerHTML = `
+                    <h4>Recycling Guide:</h4>
+                    <p>${binGuidance[result.className]}</p>
+                `;
+            } catch (error) {
+                console.error('Prediction error:', error);
+                document.getElementById('predictionResult').innerHTML = 
+                    '<p class="error">Error analyzing image. Please try again.</p>';
+            } finally {
+                loadingIndicator.style.display = 'none';
+            }
+        });
+    } catch (error) {
+        console.error('Initialization error:', error);
+    }
+});
+
+document.getElementById('startCameraBtn').addEventListener('click', () => {
+    // Show camera overlay when camera starts
+    document.getElementById('cameraOverlay').style.display = 'block';
+    // Show capture button
+    document.getElementById('captureBtn').style.display = 'block';
+    // Hide start camera button
+    document.getElementById('startCameraBtn').style.display = 'none';
 });
