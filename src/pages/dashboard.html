@@ -18,7 +18,7 @@
             </div>
             <ul class="nav-links">
                 <li class="active">
-                    <a href="#">
+                    <a href="dashboard.html">
                         <i class="fas fa-home"></i>
                         <span class="nav-text">Dashboard</span>
                     </a>
@@ -36,7 +36,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#tips">
+                    <a href="tips.html">
                         <i class="fas fa-lightbulb"></i>
                         <span class="nav-text">Tips</span>
                     </a>
@@ -70,7 +70,6 @@
                     </a>
                 </div>
 
-                <!-- Stats Card -->
                 <div class="card stats-card">
                     <h3>Your Impact</h3>
                     <div class="stats-grid">
@@ -99,10 +98,55 @@
                     <h3>Daily Tip</h3>
                     <p id="dailyTip">Remember to rinse containers before recycling them!</p>
                 </div>
+
+                <!-- Achievements Card -->
+                <div class="card achievements-card">
+                    <h3>Achievements</h3>
+                    <div class="achievements-grid">
+                        <div class="achievement" data-count="0" id="plasticAchievement">
+                            <i class="fas fa-bottle-water"></i>
+                            <span class="achievement-label">Plastic Master</span>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="achievement" data-count="0" id="paperAchievement">
+                            <i class="fas fa-newspaper"></i>
+                            <span class="achievement-label">Paper Pro</span>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add to dashboard-grid -->
+                <div class="card impact-card">
+                    <h3>Environmental Impact</h3>
+                    <div class="impact-stats">
+                        <div class="impact-item">
+                            <i class="fas fa-tree"></i>
+                            <div class="impact-details">
+                                <span class="impact-value" id="treesValue">0</span>
+                                <span class="impact-label">Trees Saved</span>
+                            </div>
+                        </div>
+                        <div class="impact-item">
+                            <i class="fas fa-water"></i>
+                            <div class="impact-details">
+                                <span class="impact-value" id="waterValue">0</span>
+                                <span class="impact-label">Gallons Saved</span>
+                            </div>
+                        </div>
+                    </div>
+                    <canvas id="impactChart"></canvas>
+                </div>
             </div>
         </main>
     </div>
     <!-- Remove camera.js script if it exists -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="../js/dashboard-enhancements.js"></script>
     <script type="module" src="../js/dashboard.js"></script>
 </body>
 </html>

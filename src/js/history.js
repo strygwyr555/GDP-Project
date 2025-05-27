@@ -1,90 +1,88 @@
-class HistoryManager {
-    constructor() {
-        this.scans = [];
-        this.initialize();
-    }
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, query, where, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { getStorage, ref, deleteObject } from 'firebase/storage';
+import { firebaseConfig } from './firebase-config.js';
 
-    async initialize() {
-        await this.loadScans();
-        this.setupEventListeners();
-        this.renderScans();
-    }
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const storage = getStorage(app);
 
-    async loadScans() {
-        // Here you would typically fetch from your backend/database
-        // For now, we'll use localStorage
-        const storedScans = localStorage.getItem('scanHistory');
-        this.scans = storedScans ? JSON.parse(storedScans) : [];
-    }
+let currentFilter = 'all';
 
-    setupEventListeners() {
-        const searchInput = document.getElementById('searchInput');
-        const filterType = document.getElementById('filterType');
+async function loadHistory() {
+    const historyGrid = document.getElementById('historyGrid');
+    historyGrid.innerHTML = '';
 
-        if (searchInput) {
-            searchInput.addEventListener('input', () => this.filterScans());
+    try {
+        let q;
+        if (currentFilter === 'all') {
+            q = query(collection(db, 'scannedItems'));
+        } else {
+            q = query(collection(db, 'scannedItems'), where('isRecyclable', '==', true));
         }
-        if (filterType) {
-            filterType.addEventListener('change', () => this.filterScans());
-        }
-    }
 
-    filterScans() {
-        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-        const filterType = document.getElementById('filterType').value;
-
-        const filtered = this.scans.filter(scan => {
-            const matchesSearch = scan.classification.toLowerCase().includes(searchTerm);
-            const matchesType = filterType === 'all' || scan.classification.toLowerCase() === filterType;
-            return matchesSearch && matchesType;
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            const historyItem = createHistoryItem(doc.id, data);
+            historyGrid.appendChild(historyItem);
         });
-
-        this.renderScans(filtered);
-    }
-
-    renderScans(scansToRender = this.scans) {
-        const historyGrid = document.getElementById('historyGrid');
-        if (!historyGrid) return;
-
-        historyGrid.innerHTML = scansToRender.map(scan => `
-            <div class="history-item" data-id="${scan.id}">
-                <img src="${scan.imageUrl}" alt="Scanned item">
-                <div class="history-item-details">
-                    <span class="classification ${scan.classification.toLowerCase()}">
-                        ${scan.classification}
-                    </span>
-                    <span class="date">${new Date(scan.date).toLocaleDateString()}</span>
-                </div>
-                <button class="delete-btn" onclick="deleteScan('${scan.id}')">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
-        `).join('');
-    }
-
-    async deleteScan(scanId) {
-        // Remove from array
-        this.scans = this.scans.filter(scan => scan.id !== scanId);
-        // Update storage
-        localStorage.setItem('scanHistory', JSON.stringify(this.scans));
-        // Re-render
-        this.renderScans();
-    }
-
-    async addScan(imageData, classification) {
-        const newScan = {
-            id: Date.now().toString(),
-            imageUrl: imageData,
-            classification,
-            date: new Date().toISOString()
-        };
-
-        this.scans.unshift(newScan);
-        localStorage.setItem('scanHistory', JSON.stringify(this.scans));
-        this.renderScans();
+    } catch (error) {
+        console.error('Error loading history:', error);
     }
 }
 
-// Initialize history manager
-const historyManager = new HistoryManager();
-window.deleteScan = (scanId) => historyManager.deleteScan(scanId);
+function createHistoryItem(id, data) {
+    const div = document.createElement('div');
+    div.className = 'history-item';
+    div.innerHTML = `
+        <img src="${data.imageUrl}" alt="Scanned item" class="history-image">
+        <div class="history-info">
+            <p class="history-date">${new Date(data.timestamp).toLocaleString()}</p>
+            ${data.isRecyclable ? '<span class="recyclable-badge">♻️ Recyclable</span>' : ''}
+        </div>
+        <button class="delete-btn" data-id="${id}">
+            <i class="fas fa-trash"></i>
+        </button>
+    `;
+
+    const deleteBtn = div.querySelector('.delete-btn');
+    deleteBtn.addEventListener('click', () => deleteItem(id, data.imageUrl));
+
+    return div;
+}
+
+async function deleteItem(id, imageUrl) {
+    if (!confirm('Are you sure you want to delete this item?')) return;
+
+    try {
+        // Delete from Firestore
+        await deleteDoc(doc(db, 'scannedItems', id));
+
+        // Delete from Storage
+        const imageRef = ref(storage, imageUrl);
+        await deleteObject(imageRef);
+
+        // Refresh the display
+        loadHistory();
+    } catch (error) {
+        console.error('Error deleting item:', error);
+    }
+}
+
+// Event Listeners
+document.addEventListener('DOMContentLoaded', () => {
+    loadHistory();
+
+    // Filter buttons
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentFilter = btn.dataset.filter;
+            loadHistory();
+        });
+    });
+});

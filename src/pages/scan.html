@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="dashboard-container">
-        <!-- Sidebar Navigation -->
+        <!-- Include the same navbar as dashboard -->
         <nav class="sidebar">
             <div class="sidebar-header">
                 <h3 class="sidebar-title">Recycling Assistant</h3>
@@ -48,46 +48,36 @@
             </div>
         </nav>
 
-        <!-- Main Content -->
         <main class="main-content">
-            <div class="camera-section">
+            <header class="dashboard-header">
+                <h1>Scan Items</h1>
+                <div class="user-profile">
+                    <span id="userEmail"></span>
+                </div>
+            </header>
+
+            <div class="camera-section card">
                 <h2>Scan Recyclable Item</h2>
                 <div class="camera-wrapper">
+                    <!-- Add explicit button id and styling -->
+                    <button id="startCamera" class="btn-primary camera-btn">
+                        <i class="fas fa-camera"></i>
+                        Start Camera
+                    </button>
                     <video id="cameraFeed" autoplay playsinline style="display: none;"></video>
                     <canvas id="photoCanvas" style="display: none;"></canvas>
-                    <img id="capturedImage" style="display: none; max-width: 100%;">
+                    <img id="capturedImage" style="display: none;">
                     <div id="cameraError" class="error-message" style="display: none;">
                         <p></p>
                     </div>
-                    <div class="loading-indicator" style="display: none;">
-                        <div class="spinner"></div>
-                        <p>Initializing camera...</p>
-                    </div>
-                </div>
-                <div class="camera-controls">
-                    <button id="startCamera" class="btn-dynamic btn-primary">
-                        <span class="btn-text">Start Camera</span>
-                        <span class="btn-animation"><i class="fas fa-camera"></i></span>
-                    </button>
-                    <button id="capturePhoto" class="btn-dynamic btn-primary" style="display: none;">
-                        <span class="btn-text">Take Photo</span>
-                        <span class="btn-animation"><i class="fas fa-camera-retro"></i></span>
-                    </button>
-                    <button id="retakePhoto" class="btn-dynamic btn-secondary" style="display: none;">
-                        <span class="btn-text">Retake</span>
-                        <span class="btn-animation"><i class="fas fa-redo"></i></span>
-                    </button>
-                </div>
-                <div id="result" class="result-area" style="display: none;">
-                    <h3>Classification Result</h3>
-                    <div id="classificationResult"></div>
-                    <div id="recyclingInstructions"></div>
                 </div>
             </div>
         </main>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <!-- Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
     <script type="module" src="../js/scan.js"></script>
 </body>
 </html>
