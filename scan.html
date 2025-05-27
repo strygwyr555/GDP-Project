@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan Item - Recycling AI Assistant</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h3>Recycling Assistant</h3>
+            </div>
+            <ul class="nav-links">
+                <li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li class="active"><a href="scan.html"><i class="fas fa-camera"></i> Scan Item</a></li>
+                <li><a href="history.html"><i class="fas fa-history"></i> History</a></li>
+                <li><a href="#tips"><i class="fas fa-lightbulb"></i> Tips</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <header class="dashboard-header">
+                <h1>Scan Item</h1>
+                <p>Position the item within the frame to identify how to recycle it</p>
+            </header>
+
+            <div class="scan-container">
+                <!-- Single video container - removed the duplicate -->
+                <div class="camera-wrapper">
+                    <video id="cameraFeed" autoplay playsinline></video>
+                    <div class="camera-overlay">
+                        <div class="scan-frame"></div>
+                    </div>
+                    <canvas id="canvas" style="display:none;"></canvas>
+                </div>
+
+                <div class="camera-controls">
+                    <button id="startCameraBtn" class="btn-primary">
+                        <i class="fas fa-camera"></i> Start Camera
+                    </button>
+                    <button id="captureBtn" class="btn-primary" style="display:none;">
+                        <i class="fas fa-camera"></i> Capture
+                    </button>
+                    <button id="retakeBtn" class="btn-secondary" style="display:none;">
+                        <i class="fas fa-redo"></i> Retake
+                    </button>
+                </div>
+
+                <div id="resultArea" class="result-container">
+                    <h3>Scan Result</h3>
+                    <div id="predictionResult" class="prediction-result">
+                        <!-- Results will appear here -->
+                    </div>
+                    <div class="recycling-info">
+                        <div class="bin-info">
+                            <i class="fas fa-trash-alt"></i>
+                            <span id="binType">Bin Type: </span>
+                        </div>
+                        <div class="material-info">
+                            <i class="fas fa-info-circle"></i>
+                            <span id="materialType">Material: </span>
+                        </div>
+                        <div class="recycling-tip">
+                            <i class="fas fa-lightbulb"></i>
+                            <span id="recyclingTip">Tip: </span>
+                        </div>
+                    </div>
+                    <button id="saveResultBtn" class="btn-primary">
+                        <i class="fas fa-save"></i> Save Result
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="../js/camera.js"></script>
+    <script>
+        // Handle logout
+        document.getElementById('logoutBtn')?.addEventListener('click', () => {
+            if (typeof logout === 'function') {
+                logout();
+            }
+        });
+    </script>
+</body>
+</html>

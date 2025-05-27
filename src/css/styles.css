@@ -176,23 +176,29 @@ button:hover {
 .sidebar {
     width: 250px;
     height: 100vh;
-    background: #2c3e50;
-    padding: 1rem;
-    transition: width 0.3s ease;
     position: fixed;
     left: 0;
     top: 0;
+    background: linear-gradient(180deg, #2e7d32 0%, #1b5e20 100%); /* Darker green gradient */
+    color: white;
+    padding: 1rem;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar-header {
     padding: 1rem 0;
     text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .sidebar-title {
     color: white;
     margin: 0;
     transition: opacity 0.3s ease;
+    font-size: 1.3rem;
+    font-weight: 500;
 }
 
 .nav-links {
@@ -205,78 +211,79 @@ button:hover {
     display: flex;
     align-items: center;
     padding: 0.75rem 1rem;
-    color: white;
+    color: rgba(255, 255, 255, 0.9);
     text-decoration: none;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    border-radius: 8px;
 }
 
-.nav-links a i {
+.nav-links a:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    transform: translateX(5px);
+}
+
+.nav-links .active a {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    font-weight: 500;
+}
+
+.nav-links i {
     width: 24px;
     text-align: center;
     margin-right: 1rem;
     font-size: 1.2rem;
+    opacity: 0.9;
 }
 
-.nav-text {
-    transition: opacity 0.3s ease;
+.btn-logout {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    margin-top: auto;
 }
 
-/* Responsive breakpoint */
-@media (max-width: 768px) {
+.btn-logout:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Mobile navbar styles */
+@media screen and (max-width: 768px) {
     .sidebar {
         width: 60px;
-        transition: all 0.3s ease;
+        background: linear-gradient(180deg, #2e7d32 0%, #1b5e20 100%);
     }
-    
-    .sidebar-header h3,
-    .nav-links a span,
-    .btn-logout span {
-        display: none;
+
+    .menu-toggle {
+        background: #2e7d32;
+        color: white;
+        border: none;
+        padding: 0.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
-    
-    .nav-links a {
-        justify-content: center;
-        padding: 0.75rem;
-    }
-    
-    .nav-links a i {
-        margin-right: 0;
-        width: auto;
-    }
-    
-    .main-content {
-        margin-left: 60px;
-    }
-    
-    .btn-logout {
-        padding: 0.75rem;
-        justify-content: center;
-    }
-    
-    .btn-logout i {
-        margin: 0;
+
+    .menu-toggle:hover {
+        background: #1b5e20;
     }
 }
 
-/* Optional: Hover effect to show text on mobile */
-@media (max-width: 768px) {
-    .sidebar:hover {
-        width: 250px;
-    }
-
-    .sidebar:hover .sidebar-title,
-    .sidebar:hover .nav-text {
-        opacity: 1;
-        visibility: visible;
-    }
-
-    .sidebar:hover .nav-links a {
-        justify-content: flex-start;
-        padding: 0.75rem 1rem;
-    }
-
-    .sidebar:hover .nav-links a i {
-        margin-right: 1rem;
+/* Extra small screen styles */
+@media screen and (max-width: 480px) {
+    .sidebar.expanded {
+        box-shadow: 2px 0 15px rgba(0, 0, 0, 0.2);
     }
 }
 
@@ -400,6 +407,7 @@ button:hover {
     border-radius: 4px;
     margin: 10px 0;
     text-align: center;
+    display: none; /* Hidden by default */
 }
 
 .error-message.visible {
@@ -411,7 +419,11 @@ button:hover {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 8px;
     text-align: center;
+    z-index: 1000;
 }
 
 .spinner {
@@ -684,36 +696,39 @@ button:hover {
 @media (max-width: 768px) {
     .sidebar {
         width: 60px;
-        transition: all 0.3s ease;
+        overflow: hidden;
     }
-    
-    .sidebar-header h3,
-    .nav-links a span,
-    .btn-logout span {
+
+    .sidebar-header h3 {
         display: none;
     }
-    
+
+    .nav-text {
+        display: none;
+    }
+
     .nav-links a {
         justify-content: center;
         padding: 0.75rem;
     }
-    
-    .nav-links a i {
-        margin-right: 0;
-        width: auto;
+
+    .nav-links i {
+        font-size: 1.2rem;
+        margin: 0;
     }
-    
-    .main-content {
-        margin-left: 60px;
-    }
-    
+
     .btn-logout {
         padding: 0.75rem;
         justify-content: center;
     }
-    
-    .btn-logout i {
-        margin: 0;
+
+    .btn-logout .nav-text {
+        display: none;
+    }
+
+    .main-content {
+        margin-left: 60px;
+        width: calc(100% - 60px);
     }
 }
 
@@ -815,13 +830,6 @@ button:hover {
     margin: 1rem auto;
 }
 
-.camera-wrapper {
-    position: relative;
-    width: 100%;
-    max-width: 640px;
-    margin: 0 auto;
-}
-
 /* Animation Classes */
 .animate-text {
     opacity: 0;
@@ -900,6 +908,9 @@ button:hover {
     width: 100%;
     max-width: 640px;
     margin: 0 auto;
+    background: #000;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 #cameraFeed, #capturedImage {
@@ -1368,4 +1379,172 @@ html {
         transform: translateX(0);
         opacity: 1;
     }
+}
+
+/* Upload Section Styles */
+.upload-section {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e0e0e0;
+}
+
+.upload-section h3 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+}
+
+.upload-area {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    min-height: 200px;
+    border: 2px dashed #4CAF50;
+    border-radius: 8px;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.upload-area:hover {
+    background: #f0f7f0;
+    border-color: #45a049;
+}
+
+.upload-content {
+    text-align: center;
+    padding: 1rem;
+}
+
+.upload-content i {
+    font-size: 3rem;
+    color: #4CAF50;
+    margin-bottom: 1rem;
+}
+
+.upload-content p {
+    margin: 0.5rem 0;
+    color: #2c3e50;
+}
+
+.file-info {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.file-input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+#uploadedImage {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: 8px;
+    margin: 1rem auto;
+}
+
+/* Drag and drop states */
+.upload-area.dragover {
+    background: #e8f5e9;
+    border-color: #4CAF50;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .upload-section {
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+    }
+
+    .upload-area {
+        min-height: 150px;
+    }
+
+    .upload-content i {
+        font-size: 2rem;
+    }
+
+    .upload-content p {
+        font-size: 0.9rem;
+    }
+}
+
+.scan-description {
+    color: #666;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+}
+
+.camera-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.scan-frame {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 80%;
+    border: 2px solid rgba(76, 175, 80, 0.5);
+    border-radius: 8px;
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
+}
+
+.recycling-info {
+    background: #f5f5f5;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1rem 0;
+}
+
+.recycling-info div {
+    margin: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.recycling-info i {
+    color: #4CAF50;
+    width: 24px;
+    text-align: center;
+}
+
+.prediction-result {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #2c3e50;
+    margin: 1rem 0;
+}
+
+.camera-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+    background: #000;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.camera-wrapper video {
+    width: 100%;
+    height: auto;
+    display: block;
 }
